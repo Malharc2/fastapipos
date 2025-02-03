@@ -1,19 +1,11 @@
-build:
-  command: poetry install
-  render:
-    env: python
-
 services:
   - type: web
-    name: my-fastapi-app
-    env: python
-    build:
-      command: poetry install
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 8000
-    ports:
-      - 8000:8000
-    healthcheck:
-      path: /health
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    name: fastapipos
+    runtime: python
+    buildCommand: poetry install
+    startCommand: poetry run uvicorn main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: POETRY_VERSION
+        value: 1.7.1
