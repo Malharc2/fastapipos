@@ -1,0 +1,18 @@
+build:
+  command: pip install -r requirements.txt
+  render:
+    env: python
+
+services:
+  - type: web
+    name: my-fastapi-app
+    env: python
+    build:
+      command: uvicorn main:app --host 0.0.0.0 --port 8000
+    ports:
+      - 8000:8000
+    healthcheck:
+      path: /health
+      interval: 10s
+      timeout: 5s
+      retries: 3
